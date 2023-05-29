@@ -22,7 +22,8 @@ def send_web_push(subscription_information, message_body):
         subscription_info=subscription_information,
         data=message_body,
         vapid_private_key=VAPID_PRIVATE_KEY,
-        vapid_claims=VAPID_CLAIMS
+        vapid_claims=VAPID_CLAIMS,
+        ttl=30
     )
 
 @app.route('/')
@@ -56,6 +57,7 @@ def push_v1():
     token = request.json.get('sub_token')
     try:
         token = json.loads(token)
+        print(f'token: {token}')
         send_web_push(token, message)
         return jsonify({'success':1})
     except Exception as e:
